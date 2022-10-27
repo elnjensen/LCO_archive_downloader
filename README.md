@@ -39,5 +39,7 @@ Note that older versions of Spyder are known to cause issues.  Update to
 Anaconda prompt (Windows) or a Terminal window (Mac) and type
   `conda update anaconda`
 This should update Spyder and all its dependencies (as well as
-other packages you have installed).
+other packages you have installed). 
+
+Some Windows users have reported that older versions of Anaconda will not update successfully. If this problem is encountered, a solution is to uninstall Anaconda from your computer and then reinstall the latest version. WARNING: all python packages that you have previsouly installed will needed to be reinstalled after uninstalling and reinstalling Anaconda. After Anaconda has been updated or reinstalled, Spyder may still need to be updated to obtain the latest version. In an Anaconda prompt (Windows) or a Terminal window (Mac), type 'pip install spyder --upgrade'. 
     
