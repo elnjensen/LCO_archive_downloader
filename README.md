@@ -49,7 +49,7 @@ Other options:
                         First image to download (default: 1)
   --raw                 Download raw data (default is reduced data)
   --count_only          Only display count of images, no download
-  -z, --zipfile         Download files all at once in a zipfile
+  -z, --zipfile         Download each filter's files all at once in a zipfile
   --streams STREAMS     Number of simultaneous downloads (default=6)
   --token TOKEN         LCO API access token
 ```

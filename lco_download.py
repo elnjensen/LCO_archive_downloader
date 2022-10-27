@@ -163,7 +163,7 @@ def get_args():
         action='store_true', required=False)
     parser.add_argument(
         '-z', '--zipfile', default=False,
-        help='Download files all at once in a zipfile',
+        help='Download each filter\'s files all at once in a zipfile',
         action='store_true', required=False)
     parser.add_argument(
         '--streams', type=int,
