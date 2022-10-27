@@ -77,7 +77,7 @@ def hardcoded_args():
     # Whether to download all in a zipfile (vs. individual files)
     args.zipfile = False
     # Number of simultaneous downloads
-    args.threads = 6
+    args.streams = 6
     # Filter to download; '' means all available filters. 
     args.filter = ''
     # Enter your token here if you don't have it at the top: 
@@ -166,8 +166,8 @@ def get_args():
         help='Download files all at once in a zipfile',
         action='store_true', required=False)
     parser.add_argument(
-        '--threads', type=int,
-        help='Number of simultaneous downloads (default=12)',
+        '--streams', type=int,
+        help='Number of simultaneous downloads (default=6)',
         default=6, required=False)
     # Can hard-code token in the lines above, or pass it here on the 
     # comnmand line if you prefer not to have it in the script: 
@@ -268,9 +268,9 @@ async def download_one_image(frame, output_dir, session):
         return frame
 
 async def download_images_async(frames, output_dir,
-                                n_threads=12, progbar=True):
-    ''' Download images asynchronously in multiple threads. '''
-    connector = aiohttp.TCPConnector(limit_per_host=n_threads)
+                                n_streams=6, progbar=True):
+    ''' Download images asynchronously in multiple streams. '''
+    connector = aiohttp.TCPConnector(limit_per_host=n_streams)
     if progbar:
         gather_func = tqdm.asyncio.tqdm.gather
     else:
@@ -399,7 +399,7 @@ raw = a.raw
 count_only = a.count_only
 output_dir = os.path.expanduser(a.directory)
 zipfile = a.zipfile
-n_threads = a.threads
+n_streams = a.streams
 filterband = a.filter
 
 # If the token wasn't hard-coded at the top of the script, 
@@ -578,7 +578,7 @@ for filt, expose, frames in zip(filter_list, exposure_list, frame_master_list):
             max_retries = 5
             download_status = asyncio.run(download_images_async(frames, 
                                                                 output_subdir, 
-                                                                n_threads, 
+                                                                n_streams,
                                                                 show_progress))
             # Get only values that are not None, i.e. the failed frames:
             failed_list = list(filter(None, download_status))
@@ -588,7 +588,7 @@ for filt, expose, frames in zip(filter_list, exposure_list, frame_master_list):
                       f'pass {retry_count}, trying again.\n')
                 download_status = asyncio.run(download_images_async(failed_list, 
                                                                     output_subdir, 
-                                                                    n_threads))
+                                                                    n_streams))
                 failed_list = list(filter(None, download_status))
             if (retry_count == max_retries):
                 print('\n*** Failed to download some files: ', failed_list)
