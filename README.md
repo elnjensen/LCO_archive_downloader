@@ -1,6 +1,6 @@
 # Download LCO data easily
 
-This is a Python script to download observations from the Las Cumbres Observatory (LCO) data archive. 
+This is a Python script to download observations from the [Las Cumbres Observatory (LCO)](https://lco.global/) data archive. 
 
 ### Installation
 
