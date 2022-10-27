@@ -26,11 +26,19 @@ To install packages, use `pip install [packagename]` or
     
 ### To run 
 
-You can run the script from the command line.  The RequestID of the observations you want to download is the only required parameter (if you have your API key added to the script).   Type 
+You can run the script from the command line. Type 
 
 `./lco_download.py --help`
 
-to see the command-line options. 
+to see the command-line options. The RequestID of the observations you want to download is the only required parameter (as long as you have your API key added to the script), so to download an observation with RequestID 123456, simply type
+
+`./lco_download.py --requestid 123456`
+
+### Known issues
+
+The default script behavior is to download the images in a given dataset as individual files (which are already compressed).  If you prefer to download a zipfile instead, use the `-z` option for the script.  Note, however, that there is a limit to the size of the zipfile that the archive can create in the time before the request times out.  If your dataset has a large number of observations in a given filter (several hundred or more), you will likely need to use the (default) individual-file download option, which in general is faster anyway.  The symptom that you are hitting the zipfile size limit is a 504 (gateway timeout) error.
+
+### Using the Spyder IDE
 
 If you prefer, you can edit the script to hard-code any arguments you want to pass, and then run it from within an IDE like [Spyder](https://www.spyder-ide.org/).  To do this, edit the script to change `use_command_line_args` to `False`, and then edit the `hardcoded_args` subroutine to specify your desired arguments. 
 
@@ -39,5 +47,7 @@ Note that older versions of Spyder are known to cause issues.  Update to
 Anaconda prompt (Windows) or a Terminal window (Mac) and type
   `conda update anaconda`
 This should update Spyder and all its dependencies (as well as
-other packages you have installed).
+other packages you have installed). 
+
+Some Windows users have reported that older versions of Anaconda will not update successfully. If you encounter this problem, one solution is to uninstall Anaconda from your computer and then reinstall the latest version. WARNING: all Python packages that you have previously installed will need to be reinstalled after uninstalling and reinstalling Anaconda. After Anaconda has been updated or reinstalled, Spyder may still need to be updated to obtain the latest version. In an Anaconda prompt (Windows) or a Terminal window (Mac), type `conda update spyder`. 
     
