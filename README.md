@@ -34,6 +34,26 @@ to see the command-line options. The RequestID of the observations you want to d
 
 `./lco_download.py --requestid 123456`
 
+Other options: 
+```
+  -h, --help            show this help message and exit
+  -r REQUESTID, --requestid REQUESTID
+                        Request ID (e.g. 1234567)
+  -d DIRECTORY, --directory DIRECTORY
+                        Directory for downloads
+  -f FILTER, --filter FILTER
+                        Filter to download (default: all)
+  -n NUMFRAMES, --numframes NUMFRAMES
+                        Maximum number of frames per filter to download (default: all)
+  -s START, --start START
+                        First image to download (default: 1)
+  --raw                 Download raw data (default is reduced data)
+  --count_only          Only display count of images, no download
+  -z, --zipfile         Download files all at once in a zipfile
+  --streams STREAMS     Number of simultaneous downloads (default=6)
+  --token TOKEN         LCO API access token
+```
+
 ### Known issues
 
 The default script behavior is to download the images in a given dataset as individual files (which are already compressed).  If you prefer to download a zipfile instead, use the `-z` option for the script.  Note, however, that there is a limit to the size of the zipfile that the archive can create in the time before the request times out.  If your dataset has a large number of observations in a given filter (several hundred or more), you will likely need to use the (default) individual-file download option, which in general is faster anyway.  The symptom that you are hitting the zipfile size limit is a 504 (gateway timeout) error.
