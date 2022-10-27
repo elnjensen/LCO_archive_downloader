@@ -4,7 +4,7 @@ This is a Python script to download observations from the Las Cumbres Observator
 
 ### Installation
 
-Just save a copy of the script lco_download.py to your directory of choice and make it executable, e.g. `chmod +x lco_download.py` in Linux or Mac (from Terminal app). 
+Just save a copy of the script `lco_download.py` to your directory of choice and make it executable, e.g. `chmod +x lco_download.py` in Linux or Mac (from Terminal app). 
 
 ### Setup
 
@@ -13,12 +13,12 @@ You'll need your API key from your LCO account.  Log in to the [LCO observation 
 ### Python prerequisites
 
 Pre-requisite package that is not in the Python standard library:
-*    requests      # for HTTP requests
+*    [`requests`](https://requests.readthedocs.io/en/latest/)       *(for HTTP requests)*
     
 Optional (but highly recommended) packages for better performance: 
-*    tqdm          #  for nice progress bars
-*    aiohttp       #  for multiple file downloads in parallel
-*    nest_asyncio  #  only needed if running from Spyder IDE
+*    [`tqdm`](https://tqdm.github.io/)       *(for nice progress bars)*
+*    [`aiohttp`](https://docs.aiohttp.org/en/stable/)       *(for multiple file downloads in parallel)*
+*    [`nest_asyncio`](https://github.com/erdewit/nest_asyncio)   *(only needed if running from Spyder IDE)*
 
 To install packages, use `pip install [packagename]` or 
     `conda install [packagename]`
@@ -32,7 +32,7 @@ You can run the script from the command line.  The RequestID of the observations
 
 to see the command-line options. 
 
-If you prefer, you can edit the script to hard-code any arguments you want to pass, and then run it from within an IDE like Spyder.  To do this, edit the script to change `use_command_line_args` to `False`, and then edit the `hardcoded_args` subroutine to specify your desired arguments. 
+If you prefer, you can edit the script to hard-code any arguments you want to pass, and then run it from within an IDE like [Spyder](https://www.spyder-ide.org/).  To do this, edit the script to change `use_command_line_args` to `False`, and then edit the `hardcoded_args` subroutine to specify your desired arguments. 
 
 Note that older versions of Spyder are known to cause issues.  Update to 
 5.3.3 or newer for best results.  If using anaconda, open the 
