@@ -248,7 +248,7 @@ async def download_one_image(frame, output_dir, session):
     '''
     
     output_file = os.path.join(output_dir, frame['filename'])
-    chunk_size = 1024*1024*8
+    chunk_size = 1024*10
     try:
         # Set a long timeout, cumulative for the whole download
         async with session.get(url=frame['url'],
