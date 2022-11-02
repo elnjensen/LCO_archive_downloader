@@ -308,7 +308,12 @@ def get_obs_info(request_id, headers):
         date_string = re.sub('T.*', '', r['windows'][0]['start'])
 
         config = r['configurations'][0]
-        defocus = config['instrument_configs'][0]['extra_params']['defocus']
+        # Older observations don't have the 'defocus' field in the 
+        # config info, so check first before accessing: 
+        if 'defocus' in config['instrument_configs'][0]['extra_params']:
+            defocus = config['instrument_configs'][0]['extra_params']['defocus']
+        else:
+            defocus = None
         if (config['instrument_type'] == '2M0-SCICAM-MUSCAT'):
             filter_list = ['gp', 'rp', 'ip', 'zs']
             # Put them in the same order as filters above:
