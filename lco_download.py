@@ -363,6 +363,8 @@ def create_pathname(frame, filters, date_string,
     
     if re.match('ep', frame['instrument_id']):
         telescope = 'M3'
+    elif re.match('^sq', frame['instrument_id']):
+        telescope = '0m35'
     else:
         # Drop trailing letter from telescope, e.g. '2m0a'
         telescope = re.sub('[a-z]$', '', frame['telescope_id'])
