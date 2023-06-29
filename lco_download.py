@@ -327,15 +327,23 @@ def get_obs_info(request_id, headers):
                            for c in config['instrument_configs']]
             exposure_times = [c['exposure_time'] \
                               for c in config['instrument_configs']]
+        # Full field or not?  Only an option for 0.35m QHY at present: 
+        if ('mode' in config['instrument_configs'][0]) and \
+                (config['instrument_configs'][0]['mode'] == \
+                 'central30x30'):
+            subframe = True
+        else:
+            subframe = False
     except Exception as e:
         print(f'*** Could not get info for request ID {reqid}: {e}.')
-        return False, None, None, None, None
-        
-    return True, defocus, date_string, filter_list, exposure_times
+        return False, None, None, None, None, None
+
+    return True, defocus, date_string, filter_list, \
+        exposure_times, subframe
         
 
 def create_pathname(frame, filters, date_string,
-                    defocus=None, exp_time=None):
+                    defocus=None, exp_time=None, subframe=False):
     '''
     Given an input frame, use the info to create a filename or
     directory string that encodes information about the
@@ -364,7 +372,11 @@ def create_pathname(frame, filters, date_string,
     if re.match('ep', frame['instrument_id']):
         telescope = 'M3'
     elif re.match('^sq', frame['instrument_id']):
-        telescope = '0m35'
+        telescope = '0m4'
+        if subframe:
+            telescope += 'p'
+        else:
+            telescope += 'P'
     else:
         # Drop trailing letter from telescope, e.g. '2m0a'
         telescope = re.sub('[a-z]$', '', frame['telescope_id'])
@@ -441,8 +453,8 @@ else:
 headers = {'Authorization': f'Token {token}'}
 frames_url = 'https://archive-api.lco.global/frames/'
 
-success, defocus, date_string, filters, \
-    exposure_times = get_obs_info(reqid, headers)
+success, defocus, date_string, filters, exposure_times, \
+    subframe = get_obs_info(reqid, headers)
     
 if success:
     print(f'Observations starting {date_string}:')
@@ -527,7 +539,7 @@ if not count_only and not os.path.exists(output_dir):
 
 # Now the observation-specific directory name: 
 pathname_string = create_pathname(frame_master_list[0][0], filter_list,
-                                  date_string)
+                                  date_string, subframe=subframe)
 # This will be our actual output directory, so reassign the variable:
 output_dir = os.path.join(output_dir, f'{pathname_string}_{total_frames}')
 
@@ -563,7 +575,8 @@ for filt, expose, frames in zip(filter_list, exposure_list, frame_master_list):
 
             
     pathname_string = create_pathname(frames[0], filt, date_string, 
-                                      defocus, expose) + f'_{count}'
+                                      defocus, expose, subframe=subframe) + \
+            f'_{count}'
 
     if zipfile:
         output_path = os.path.join(output_dir, f'{pathname_string}.zip')
