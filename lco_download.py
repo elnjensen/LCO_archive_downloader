@@ -3,7 +3,7 @@
 """
 Script to download observations from the LCO archive
 Eric Jensen, Oct. 2022  ejensen1@swarthmore.edu 
-Copyright Eric Jensen, 2022
+Copyright Eric Jensen, 2022-2023
 
 Pre-requisite package that is not in the Python standard library:
     requests      # for HTTP requests
@@ -369,8 +369,10 @@ def create_pathname(frame, filters, date_string,
                 'lsc': 'CTIO', 'elp': 'McD', 'ogg': 'Hal'}
     obs = obs_names[frame['site_id']]
     
-    if re.match('ep', frame['instrument_id']):
+    if re.match('ep0[2345]', frame['instrument_id']):
         telescope = 'M3'
+    elif re.match('ep0[6789]', frame['instrument_id']):
+        telescope = 'M4'
     elif re.match('^sq', frame['instrument_id']):
         telescope = '0m4'
         if subframe:
