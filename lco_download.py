@@ -469,8 +469,10 @@ else:
     
 print()
 if (raw):
+    reduction_string = 'raw'
     reduction_level = 0
 else:
+    reduction_string = 'reduced'
     reduction_level = 91
 
 if (filterband == ''):
@@ -492,7 +494,7 @@ else:
 # Array of arrays: each entry is an array of the frame info for one filter:
 frame_master_list = []
 total_frames = 0
-for filt in filter_list:
+for i, filt in enumerate(filter_list):
     # Note that the offset is one less than the desired start image number:
     url = f'{frames_url}?request_id={reqid}&' + \
         f'reduction_level={reduction_level}&' + \
@@ -517,8 +519,13 @@ for filt in filter_list:
     print(f'Got {len(frames)} total for filter {filt}.\n')
 
     if len(frames) == 0:
-        print('No frames match the query; check parameters and try again.\n')
-        sys.exit(0)
+        print(f'*** Warning: No {reduction_string} {filt} frames available.\n')
+        if len(filter_list) == 1:
+            sys.exit(0)
+        else:
+            # Nothing for this filter (maybe there are raw frames
+            # but not reduced?), so drop exposures from list: 
+            del(exposure_list[i])
     else:
         frame_master_list.append(frames)
         total_frames += len(frames)
