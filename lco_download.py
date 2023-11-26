@@ -338,6 +338,26 @@ def get_obs_info(request_id, headers):
         print(f'*** Could not get info for request ID {reqid}: {e}.')
         return False, None, None, None, None, None
 
+    if len(filter_list) > 1:
+        # It's convenient to download the longest-wavelength data first 
+        # for a quick look, since it usually has higher S/N, so sort the 
+        # arrays in reverse-wavelength order. 
+        sort_order = ['Y', 'zs', 'w', 'I', 'ip', 'R', 'rp', 
+                      'V', 'gp', 'B', 'up', 'U']
+        try:
+            # Get indices of each filter from ordered list. 
+            sort_keys = [sort_order.index(f) for f in filter_list]
+            # Above array has correct ordering, but discontiguous numbering, 
+            # so it can't be used for indexing arrays. Get array of indices 
+            # for sorting both arrays, and sort indices with above scheme: 
+            inds = list(range(len(sort_keys)))
+            inds.sort(key=sort_keys.__getitem__)
+            filter_list = [filter_list[i] for i in inds]
+            exposure_times = [exposure_times[i] for i in inds]
+        except ValueError as e:
+            print('Not sorting filters due to unrecognized filter name:')
+            print(e)
+        
     return True, defocus, date_string, filter_list, \
         exposure_times, subframe
         
