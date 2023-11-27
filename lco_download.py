@@ -514,7 +514,11 @@ else:
 # Array of arrays: each entry is an array of the frame info for one filter:
 frame_master_list = []
 total_frames = 0
-for i, filt in enumerate(filter_list):
+
+# We might have to change the filter list during the loop, so iterate
+# over a copy:
+original_filter_list = filter_list.copy()
+for i, filt in enumerate(original_filter_list):
     # Note that the offset is one less than the desired start image number:
     url = f'{frames_url}?request_id={reqid}&' + \
         f'reduction_level={reduction_level}&' + \
@@ -544,8 +548,9 @@ for i, filt in enumerate(filter_list):
             sys.exit(0)
         else:
             # Nothing for this filter (maybe there are raw frames
-            # but not reduced?), so drop exposures from list: 
+            # but not reduced?), so drop exposures and filter from list: 
             del(exposure_list[i])
+            del(filter_list[i])
     else:
         frame_master_list.append(frames)
         total_frames += len(frames)
