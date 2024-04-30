@@ -327,6 +327,13 @@ def get_obs_info(request_id, headers):
                            for c in config['instrument_configs']]
             exposure_times = [c['exposure_time'] \
                               for c in config['instrument_configs']]
+            # Sometimes the Bessel I or R filters are listed in the 
+            # config with lowercase 'i' or 'r', but this fails when
+            # trying to retrieve from archive, so replace with 
+            # uppercase equivalents: 
+            for i, filt in enumerate(filter_list):
+                if (filt=='i') or (filt=='r'):
+                    filter_list[i] = filt.upper()
         # Full field or not?  Only an option for 0.35m QHY at present: 
         if ('mode' in config['instrument_configs'][0]) and \
                 (config['instrument_configs'][0]['mode'] == \
