@@ -316,6 +316,19 @@ def get_obs_info(request_id, headers):
             defocus = None
         if (config['instrument_type'] == '2M0-SCICAM-MUSCAT'):
             filter_list = ['gp', 'rp', 'ip', 'zs']
+            # Check the observation info to see if the narrow-band
+            # filters were used:
+            nb_use = config['instrument_configs'][0]['optical_elements']
+            if nb_use['narrowband_g_position'] == "in":
+                filter_list[0] = 'g_narrow'
+            # This is not called 'r_narrow' but 'Na_D'; it is much narrower
+            # than the others and centered on the Na D lines:
+            if nb_use['narrowband_r_position'] == "in":
+                filter_list[1] = 'Na_D'
+            if nb_use['narrowband_i_position'] == "in":
+                filter_list[2] = 'i_narrow'
+            if nb_use['narrowband_z_position'] == "in":
+                filter_list[3] = 'z_narrow'
             # Put them in the same order as filters above:
             par = config['instrument_configs'][0]['extra_params']
             exposure_times = [par['exposure_time_g'],
@@ -349,8 +362,8 @@ def get_obs_info(request_id, headers):
         # It's convenient to download the longest-wavelength data first 
         # for a quick look, since it usually has higher S/N, so sort the 
         # arrays in reverse-wavelength order. 
-        sort_order = ['Y', 'zs', 'w', 'I', 'ip', 'R', 'rp', 
-                      'V', 'gp', 'B', 'up', 'U']
+        sort_order = ['Y','zs','z_narrow','w','I','ip','i_narrow',
+                      'R','rp','Na_D','V','gp','g_narrow','B','up','U']
         try:
             # Get indices of each filter from ordered list. 
             sort_keys = [sort_order.index(f) for f in filter_list]
