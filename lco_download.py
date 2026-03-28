@@ -2,8 +2,8 @@
 
 """
 Script to download observations from the LCO archive
-Eric Jensen, Oct. 2022  ejensen1@swarthmore.edu 
-Copyright Eric Jensen, 2022-2023
+Eric Jensen, ejensen1@swarthmore.edu 
+Copyright Eric Jensen, 2022-2026
 
 Pre-requisite package that is not in the Python standard library:
     requests      # for HTTP requests
