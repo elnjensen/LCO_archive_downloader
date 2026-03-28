@@ -319,16 +319,17 @@ def get_obs_info(request_id, headers):
             # Check the observation info to see if the narrow-band
             # filters were used:
             nb_use = config['instrument_configs'][0]['optical_elements']
-            if nb_use['narrowband_g_position'] == "in":
-                filter_list[0] = 'g_narrow'
-            # This is not called 'r_narrow' but 'Na_D'; it is much narrower
-            # than the others and centered on the Na D lines:
-            if nb_use['narrowband_r_position'] == "in":
-                filter_list[1] = 'Na_D'
-            if nb_use['narrowband_i_position'] == "in":
-                filter_list[2] = 'i_narrow'
-            if nb_use['narrowband_z_position'] == "in":
-                filter_list[3] = 'z_narrow'
+            if 'narrowband_g_position' in nb_use:
+                if nb_use['narrowband_g_position'] == "in":
+                    filter_list[0] = 'g_narrow'
+                # This is not called 'r_narrow' but 'Na_D'; it is much 
+                # narrower than the others and centered on the Na D lines:
+                if nb_use['narrowband_r_position'] == "in":
+                    filter_list[1] = 'Na_D'
+                if nb_use['narrowband_i_position'] == "in":
+                    filter_list[2] = 'i_narrow'
+                if nb_use['narrowband_z_position'] == "in":
+                    filter_list[3] = 'z_narrow'
             # Put them in the same order as filters above:
             par = config['instrument_configs'][0]['extra_params']
             exposure_times = [par['exposure_time_g'],
